@@ -25,14 +25,14 @@ sealed class Scalar : Supported() {
 }
 
 object Str : Scalar()
-object _Int : Scalar()
+object Int_ : Scalar()
 object Float : Scalar()
 object Bool : Scalar()
 
 val Scalar.simple: Any
     get() = when (this) {
         Str -> ""
-        _Int -> 1
+        Int_ -> 1
         Float -> 1.0
         Bool -> true
     }
@@ -78,7 +78,7 @@ fun readJsonItemDescription(jsonParser: JsonParser): JsonItemDescription {
     }
     when (jsonParser.currentToken) {
         JsonToken.VALUE_STRING -> return Str
-        JsonToken.VALUE_NUMBER_INT -> return _Int
+        JsonToken.VALUE_NUMBER_INT -> return Int_
         JsonToken.VALUE_NUMBER_FLOAT -> return Float
         JsonToken.VALUE_TRUE, JsonToken.VALUE_FALSE -> return Bool
         JsonToken.START_OBJECT -> {
