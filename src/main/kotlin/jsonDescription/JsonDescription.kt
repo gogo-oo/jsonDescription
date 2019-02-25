@@ -14,23 +14,22 @@ data class Obj(val fields: MutableMap<String, Supported> = mutableMapOf()) : Sup
 
 data class Arr(val itemTypes: MutableList<Supported> = mutableListOf()) : Supported()
 
-sealed class Scalar : Supported()
-
-object Str : Scalar() {
-    override fun toString(): String = "Str"
+sealed class Scalar : Supported() {
+    override fun toString(): String = this.name
 }
 
-object _Int : Scalar() {
-    override fun toString(): String = "Int"
-}
+object Str : Scalar()
+object _Int : Scalar()
+object Float : Scalar()
+object Bool : Scalar()
 
-object Float : Scalar() {
-    override fun toString(): String = "Float"
-}
-
-object Bool : Scalar() {
-    override fun toString(): String = "Bool"
-}
+val Scalar.name
+    get() = when (this) {
+        Str -> "Str"
+        _Int -> "Int"
+        Float -> "Float"
+        Bool -> "Bool"
+    }
 
 fun JsonItemDescription.toJsonString() = when (this) {
     is Supported -> this.toJsonString()
@@ -54,7 +53,7 @@ fun Supported.toJsonString(): String {
             res += "}"
         }
         is Arr -> res += itemDescription.itemTypes.joinToString(separator, "[", "]") { it.toJsonString() }
-        is Scalar -> res += """"$itemDescription""""
+        is Scalar -> res += """"${itemDescription.name}""""
     }
     return res.toString()
 }
