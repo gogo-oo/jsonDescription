@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.core.JsonFactory
+import com.fasterxml.jackson.databind.ObjectMapper
 import jsonDescription.readJsonItemDescription
 import org.junit.Test
 
@@ -100,9 +101,18 @@ class JsonDescriptionCheck {
 
         val descJsonStr01 = readJsonItemDescription(JsonFactory().createParser(jsonStr01))
         println(descJsonStr01)
+        println(toJsonPrettyStr(descJsonStr01.toString()))
 
         val descJsonStr02 = readJsonItemDescription(JsonFactory().createParser(jsonStr02))
         println(descJsonStr02)
+        println(toJsonPrettyStr(descJsonStr02.toString()))
 
     }
+
+    private fun toJsonPrettyStr(str: String): String {
+        val mapper = ObjectMapper()
+        val result = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readValue(str, Any::class.java))
+        return result ?: ""
+    }
+
 }
