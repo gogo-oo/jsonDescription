@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.core.JsonFactory
 import jsonDescription.readJsonItemDescription
-import jsonDescription.toJsonString
 import org.junit.Test
 
 //    testImplementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
@@ -98,15 +97,12 @@ class JsonDescriptionCheck {
 
         val descNull = readJsonItemDescription(JsonFactory().createParser("null"))
         println(descNull)
-        println(descNull.toJsonString())
 
         val descJsonStr01 = readJsonItemDescription(JsonFactory().createParser(jsonStr01))
         println(descJsonStr01)
-        println(descJsonStr01.toJsonString())
 
         val descJsonStr02 = readJsonItemDescription(JsonFactory().createParser(jsonStr02))
         println(descJsonStr02)
-        println(descJsonStr02.toJsonString())
 
     }
 }

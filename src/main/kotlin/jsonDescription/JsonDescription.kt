@@ -12,9 +12,13 @@ object Unsupported : JsonItemDescription()
 
 sealed class Supported : JsonItemDescription()
 
-class Obj(val fields: MutableMap<String, Supported> = mutableMapOf()) : Supported()
+class Obj : Supported() {
+    val fields = mutableMapOf<String, Supported>()
+}
 
-class Arr(val itemTypes: MutableList<Supported> = mutableListOf()) : Supported()
+class Arr : Supported() {
+    val itemTypes = mutableListOf<Supported>()
+}
 
 sealed class Scalar : Supported() {
     override fun toString(): String = this.simple.toString()
