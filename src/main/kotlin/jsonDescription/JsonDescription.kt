@@ -33,9 +33,9 @@ object Bool : Scalar() {
 }
 
 fun JsonItemDescription.toJsonString(): String {
-    when (this) {
-        is Supported -> return this.toJsonString()
-        Unsupported -> return "[\"Unsupported\"]"
+    return when (this) {
+        is Supported -> this.toJsonString()
+        Unsupported -> "[\"Unsupported\"]"
     }
 }
 
