@@ -4,18 +4,20 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import stringUtil.plusAssign
 
-sealed class JsonItemDescription
+sealed class JsonItemDescription {
+    override fun toString(): String = this.toJsonString()
+}
 
 object Unsupported : JsonItemDescription()
 
 sealed class Supported : JsonItemDescription()
 
-data class Obj(val fields: MutableMap<String, Supported> = mutableMapOf()) : Supported()
+class Obj(val fields: MutableMap<String, Supported> = mutableMapOf()) : Supported()
 
-data class Arr(val itemTypes: MutableList<Supported> = mutableListOf()) : Supported()
+class Arr(val itemTypes: MutableList<Supported> = mutableListOf()) : Supported()
 
 sealed class Scalar : Supported() {
-    override fun toString(): String = this.simple
+    override fun toString(): String = this.simple.toString()
 }
 
 object Str : Scalar()
@@ -23,12 +25,12 @@ object _Int : Scalar()
 object Float : Scalar()
 object Bool : Scalar()
 
-val Scalar.simple
+val Scalar.simple: Any
     get() = when (this) {
-        Str -> "\"\""
-        _Int -> "1"
-        Float -> "1.0"
-        Bool -> "true"
+        Str -> ""
+        _Int -> 1
+        Float -> 1.0
+        Bool -> true
     }
 
 fun JsonItemDescription.toJsonString() = when (this) {
@@ -53,7 +55,15 @@ fun Supported.toJsonString(): String {
             res += "}"
         }
         is Arr -> res += itemDescription.itemTypes.joinToString(separator, "[", "]") { it.toJsonString() }
-        is Scalar -> res += itemDescription.simple
+        is Scalar -> when (itemDescription) {
+            Str -> {
+                res += "\""
+                res += itemDescription.simple
+                res += "\""
+
+            }
+            else -> res += itemDescription.simple
+        }
     }
     return res.toString()
 }
