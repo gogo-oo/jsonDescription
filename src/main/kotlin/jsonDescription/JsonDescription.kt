@@ -32,7 +32,7 @@ object Bool : Scalar() {
     override fun toString(): String = "Bool"
 }
 
-fun JsonItemDescription.toJsonString(): String = when (this) {
+fun JsonItemDescription.toJsonString() = when (this) {
     is Supported -> this.toJsonString()
     Unsupported -> "[\"Unsupported\"]"
 }
